@@ -9,7 +9,7 @@ A Safety Contract for AI coding agents.
 AgentRepo Guard turns repository security rules into a machine-readable `.agent-guard.yml` contract that AI coding agents can follow before reading files, installing dependencies, running commands, editing code, or committing changes.
 
 <!-- Demo GIF will be added after the first public recording. See docs/demo-script.md. -->
-<!-- ![AgentRepo Guard demo](docs/assets/demo.gif) -->
+![AgentRepo Guard demo](docs/assets/demo.gif)
 
 ## 30-second demo
 
