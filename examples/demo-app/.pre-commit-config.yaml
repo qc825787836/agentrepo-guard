@@ -1,0 +1,8 @@
+repos:
+  - repo: local
+    hooks:
+      - id: agentrepo-guard
+        name: AgentRepo Guard
+        entry: agentrepo guard --staged
+        language: system
+        pass_filenames: false

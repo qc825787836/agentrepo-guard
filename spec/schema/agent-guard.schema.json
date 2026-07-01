@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentrepo.dev/schema/agent-guard.schema.json",
+  "title": "Agent Guard Safety Contract",
+  "type": "object",
+  "required": ["version", "profile", "agent_permissions", "risk_matrix"],
+  "additionalProperties": true,
+  "properties": {
+    "version": { "type": "string" },
+    "profile": { "enum": ["permissive", "moderate", "strict", "critical"] },
+    "description": { "type": "string" },
+    "agent_permissions": {
+      "type": "object",
+      "required": [
+        "read_files",
+        "edit_files",
+        "run_shell",
+        "install_dependencies",
+        "network_access",
+        "access_secrets",
+        "modify_ci",
+        "modify_agent_guard"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "read_files": { "$ref": "#/$defs/permission" },
+        "edit_files": { "$ref": "#/$defs/permission" },
+        "run_shell": { "$ref": "#/$defs/permission" },
+        "install_dependencies": { "$ref": "#/$defs/permission" },
+        "network_access": { "$ref": "#/$defs/permission" },
+        "access_secrets": { "$ref": "#/$defs/permission" },
+        "modify_ci": { "$ref": "#/$defs/permission" },
+        "modify_agent_guard": { "$ref": "#/$defs/permission" }
+      }
+    },
+    "allowed_sources": {
+      "type": "object",
+      "properties": {
+        "package_registries": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "git_hosts": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "blocked_patterns": {
+      "type": "object",
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "apis": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "paths": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "risk_matrix": {
+      "type": "object",
+      "required": ["critical", "high", "moderate", "low"],
+      "properties": {
+        "critical": { "$ref": "#/$defs/riskBehavior" },
+        "high": { "$ref": "#/$defs/riskBehavior" },
+        "moderate": { "$ref": "#/$defs/riskBehavior" },
+        "low": { "$ref": "#/$defs/riskBehavior" }
+      }
+    },
+    "fix_templates": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["instruction"],
+        "properties": {
+          "instruction": { "type": "string" },
+          "preferred_fix": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "permission": { "enum": ["allow", "ask", "deny"] },
+    "riskBehavior": {
+      "type": "object",
+      "required": ["action", "agent_behavior"],
+      "properties": {
+        "action": { "enum": ["allow", "review", "ask", "block"] },
+        "agent_behavior": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,53 @@
+version: "0.3"
+profile: moderate
+
+agent_permissions:
+  read_files: allow
+  edit_files: allow
+  run_shell: ask
+  install_dependencies: ask
+  network_access: ask
+  access_secrets: deny
+  modify_ci: ask
+  modify_agent_guard: deny
+
+allowed_sources:
+  package_registries:
+    pypi:
+      - "https://pypi.org/simple"
+
+blocked_patterns:
+  commands:
+    - "curl * | bash"
+    - "wget * | sh"
+  apis:
+    - "eval"
+    - "exec"
+    - "subprocess.Popen"
+    - "os.system"
+  paths:
+    - ".env"
+    - ".env.*"
+    - "~/.ssh/*"
+
+risk_matrix:
+  critical:
+    action: block
+    agent_behavior: "stop and request human review"
+  high:
+    action: ask
+    agent_behavior: "explain risk and ask before continuing"
+  moderate:
+    action: review
+    agent_behavior: "prefer safe alternative"
+  low:
+    action: allow
+    agent_behavior: "continue with note"
+
+fix_templates:
+  unsafe_python_execution:
+    instruction: "Avoid dynamic execution in agent-generated Python scripts."
+    preferred_fix:
+      - "Use explicit functions instead of eval or exec"
+      - "Use subprocess.run with an argument list when shell execution is required"
+      - "Ask the user before running external commands"

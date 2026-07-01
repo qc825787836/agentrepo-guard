@@ -1,0 +1,56 @@
+version: "0.3"
+profile: moderate
+
+agent_permissions:
+  read_files: allow
+  edit_files: allow
+  run_shell: ask
+  install_dependencies: ask
+  network_access: ask
+  access_secrets: deny
+  modify_ci: ask
+  modify_agent_guard: deny
+
+allowed_sources:
+  package_registries:
+    npm:
+      - "https://registry.npmjs.org"
+
+blocked_patterns:
+  commands:
+    - "curl * | bash"
+    - "wget * | sh"
+    - "npm * --ignore-scripts=false"
+  apis:
+    - "eval"
+    - "child_process.exec"
+  paths:
+    - ".env"
+    - ".env.*"
+
+risk_matrix:
+  critical:
+    action: block
+    agent_behavior: "stop and request human review"
+  high:
+    action: ask
+    agent_behavior: "explain risk and ask before continuing"
+  moderate:
+    action: review
+    agent_behavior: "prefer safe alternative"
+  low:
+    action: allow
+    agent_behavior: "continue with note"
+
+fix_templates:
+  secret_detected:
+    instruction: "Remove hardcoded secrets and replace them with environment variables."
+    preferred_fix:
+      - "Use process.env.*"
+      - "Add placeholders to .env.example"
+      - "Do not commit real .env files"
+  install_hook:
+    instruction: "Avoid automatic postinstall execution from agent-authored changes."
+    preferred_fix:
+      - "Remove postinstall scripts unless the user confirms them"
+      - "Use npm install --ignore-scripts for review"

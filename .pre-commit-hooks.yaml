@@ -1,0 +1,6 @@
+- id: agentrepo-guard
+  name: AgentRepo Guard
+  description: Block AI-generated changes that violate .agent-guard.yml
+  entry: agentrepo guard --staged
+  language: python
+  pass_filenames: false

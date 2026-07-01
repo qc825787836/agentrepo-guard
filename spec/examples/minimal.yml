@@ -1,0 +1,26 @@
+version: "0.3"
+profile: moderate
+
+agent_permissions:
+  read_files: allow
+  edit_files: allow
+  run_shell: ask
+  install_dependencies: ask
+  network_access: ask
+  access_secrets: deny
+  modify_ci: ask
+  modify_agent_guard: deny
+
+risk_matrix:
+  critical:
+    action: block
+    agent_behavior: "stop and request human review"
+  high:
+    action: ask
+    agent_behavior: "explain risk and ask before continuing"
+  moderate:
+    action: review
+    agent_behavior: "prefer safe alternative"
+  low:
+    action: allow
+    agent_behavior: "continue with note"

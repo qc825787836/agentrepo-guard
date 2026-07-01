@@ -1,0 +1,1 @@
+export const stripeKey = "AGENTREPO_FAKE_STRIPE_LIVE_KEY_FIXTURE";
