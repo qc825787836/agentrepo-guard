@@ -2,26 +2,40 @@
 
 A Safety Contract for AI coding agents.
 
+![GitHub License](https://img.shields.io/github/license/qc825787836/agentrepo-guard)
+![GitHub last commit](https://img.shields.io/github/last-commit/qc825787836/agentrepo-guard)
+![GitHub release](https://img.shields.io/github/v/release/qc825787836/agentrepo-guard)
+
 AgentRepo Guard turns repository security rules into a machine-readable `.agent-guard.yml` contract that AI coding agents can follow before reading files, installing dependencies, running commands, editing code, or committing changes.
 
-> Experimental spec. Breaking changes are expected before v1.0.
-
 <!-- Demo GIF will be added after the first public recording. See docs/demo-script.md. -->
-![AgentRepo Guard demo](docs/assets/demo.gif)
+<!-- ![AgentRepo Guard demo](docs/assets/demo.gif) -->
 
 ## 30-second demo
 
 ```bash
+git clone https://github.com/qc825787836/agentrepo-guard.git
+cd agentrepo-guard
+python -m pip install -e .
 agentrepo demo
 ```
 
+Use this first if you only want to see the Safety Contract workflow without configuring a project.
+
 AI-generated change -> Safety Contract blocks it -> `agentrepo explain --for-agent` produces a repair plan -> the agent fixes the code -> retry passes.
+
+## ⚠️ Experimental
+
+Experimental spec: `.agent-guard.yml` is experimental and not stable. Breaking changes are expected before v1.0.
+
+- The CLI is a reference implementation, not a production-grade security scanner.
+- Some rules, such as suspicious or hallucinated dependency detection, are heuristic and do not perform live registry lookups.
+- AgentRepo Guard is not a replacement for Semgrep, TruffleHog, Gitleaks, OSV-Scanner, or pre-commit.
+- It is a coordination layer that turns AI-specific rules and security findings into a Safety Contract that coding agents can consume.
 
 ## Not another SAST tool
 
-AgentRepo Guard is not a replacement for Semgrep, TruffleHog, Gitleaks, OSV-Scanner, or pre-commit.
-
-It is a coordination layer that makes existing security tools and AI-specific rules consumable by coding agents through a unified Safety Contract.
+AgentRepo Guard does not try to replace existing scanners. It makes security findings and AI-specific rules easier for coding agents to understand and repair through a repository-level Safety Contract.
 
 ## How this is different
 
@@ -62,6 +76,19 @@ On Windows PowerShell:
 3. Critical or high-risk contract violations block or ask for review.
 4. `agentrepo explain --for-agent --format prompt --compact` turns findings into repair instructions.
 5. The agent fixes the code and retries the guard.
+
+## Guard staged changes
+
+```bash
+git add .
+agentrepo guard --staged
+```
+
+Expected demo behavior: unsafe agent-generated changes are blocked, and the agent can request a repair plan with:
+
+```bash
+agentrepo explain --for-agent --format prompt --compact
+```
 
 ## Core commands
 

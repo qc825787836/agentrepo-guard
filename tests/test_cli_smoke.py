@@ -68,10 +68,15 @@ def test_release_polish_files_exist() -> None:
 def test_readme_public_launch_copy() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     require("A Safety Contract for AI coding agents" in readme, "README should state the core positioning")
+    require("![GitHub License](https://img.shields.io/github/license/qc825787836/agentrepo-guard)" in readme, "README should include GitHub License badge")
+    require("![GitHub last commit](https://img.shields.io/github/last-commit/qc825787836/agentrepo-guard)" in readme, "README should include GitHub last commit badge")
+    require("![GitHub release](https://img.shields.io/github/v/release/qc825787836/agentrepo-guard)" in readme, "README should include GitHub release badge")
+    require("30-second demo" in readme, "README should include 30-second demo")
     require("Not another SAST tool" in readme, "README should include Not another SAST tool")
     require("How this is different" in readme, "README should include differentiation section")
     require("Current scope" in readme, "README should include current scope")
     require("Not yet supported" in readme, "README should include unsupported scope")
+    require("agentrepo guard --staged" in readme, "README should highlight guard --staged")
     require("Demo GIF will be added after the first public recording" in readme, "README should include demo GIF placeholder")
     require("python -m pip install -e ." in readme, "README should document local editable install")
     forbidden_values = [
