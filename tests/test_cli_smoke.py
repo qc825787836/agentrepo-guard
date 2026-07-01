@@ -77,7 +77,7 @@ def test_readme_public_launch_copy() -> None:
     require("Current scope" in readme, "README should include current scope")
     require("Not yet supported" in readme, "README should include unsupported scope")
     require("agentrepo guard --staged" in readme, "README should highlight guard --staged")
-    require("Demo GIF will be added after the first public recording" in readme, "README should include demo GIF placeholder")
+    require("![AgentRepo Guard demo](docs/assets/demo.gif)" in readme, "README should include the public demo GIF")
     require("python -m pip install -e ." in readme, "README should document local editable install")
     forbidden_values = [
         "agentrepo-guard-" + "starter",
